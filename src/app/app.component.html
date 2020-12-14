@@ -51,7 +51,7 @@
           </div>
         </div>
         <hr>
-        <button class="btn btn-primary" type="submit" [disabled]="signUpForm.invalid">Submit</button>
+        <button class="btn btn-primary" type="submit" [disabled]="signUpForm.invalid || !formStatus">Submit</button>
         <span *ngIf="signUpForm.invalid && signUpForm.get('username').touched && signUpForm.get('email').touched" class="help-block">Your data is still missing something!!</span>
       </form>
     </div>
