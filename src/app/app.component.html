@@ -4,33 +4,55 @@
       <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            formControlName="username"
-            class="form-control">
+          <input type="text" id="username" placeholder="Username" formControlName="username" class="form-control">
+          <span class="help-block" *ngIf="signUpForm.get('username').invalid && signUpForm.get('username').touched && !notEnoughLetters">Username is invalid!</span>
+          <span *ngIf="notEnoughLetters && signUpForm.get('username').invalid && signUpForm.get('username').touched" class="help-block">Username must be more than 5 letters!</span>
         </div>
         <div class="form-group">
           <label for="email">email</label>
-          <input
-            type="text"
-            id="email"
-            formControlName="email"
-            class="form-control">
+          <input type="text" id="email" placeholder="Email address" formControlName="email" class="form-control">
+          <span *ngIf="signUpForm.get('email').invalid && signUpForm.get('email').touched" class="help-block">Email address is invalid</span>
         </div>
         <div class="radio" *ngFor="let gender of genders">
           <label>
-            <input
-              type="radio"
-              formControlName="gender"
-              [value]="gender">{{ gender }}
+            <input type="radio" formControlName="gender" [value]="gender">{{ gender }}
           </label>
         </div>
+        <hr>
         <div formArrayName="hobbies">
-          <input type="text" class="form-control" placeholder="Add your hobby" [formControlName]="i" *ngFor="let hobby of getHobbies(); let i = index">
+          <h2>Your hobbies:</h2>
+          <p>Please add some if you have.</p>
           <button class="btn btn-default" (click)="onAddHobby()" type="button">Add Hobby</button>
+          <div class="form-group" *ngFor="let hobby of getHobbies(); let i = index">
+            <div class="row">
+              <div class="col-md-10">
+                <input type="text" class="form-control add-margin" placeholder="Add your hobby" [formControlName]="i">
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-danger add-margin" (click)="onRemoveHobby(i)" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+              </div>
+            </div>
+          </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <hr>
+        <div formArrayName="favourites">
+          <h2>Your favourites:</h2>
+          <p>Tell us more about yours.</p>
+          <button class="btn btn-warning" (click)="onAddFavouriet()" type="button">Add favourite</button>
+          <div class="form-group" *ngFor="let favourite of getfavourites(); let i = index">
+            <div class="row">
+              <div class="col-md-10">
+                <input type="text" class="form-control add-margin" placeholder="Your favourite" [formControlName]="i">
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-danger add-margin" type="button" (click)="onRemoveFavourite(i)"><span class="glyphicon glyphicon-remove"></span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <button class="btn btn-primary" type="submit" [disabled]="signUpForm.invalid">Submit</button>
+        <span *ngIf="signUpForm.invalid && signUpForm.get('username').touched && signUpForm.get('email').touched" class="help-block">Your data is still missing something!!</span>
       </form>
     </div>
   </div>
